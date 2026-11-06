@@ -60,6 +60,9 @@ Development tools are declared in `pyproject.toml`:
 - `pyright`
 - `ruff`
 
+The Python modules include API documentation through module, class, and
+function docstrings.
+
 ## Configuration
 
 The application reads these environment variables:

@@ -1,3 +1,5 @@
+"""CSV export helpers for reviews and achievement progress."""
+
 import csv
 
 from config import config
@@ -10,6 +12,7 @@ def save_outputs(
     games: list[Game],
     achievements_map: dict[int, AchievementResult],
 ) -> None:
+    """Write review and achievement data to the configured CSV files."""
     review_fields = ["AppID", "Game Title", "Review"]
     achievement_fields = [
         "AppID",

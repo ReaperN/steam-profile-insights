@@ -1,15 +1,21 @@
+"""Configuration values, environment lookup, and secret handling."""
+
 import os
 from dataclasses import dataclass, field
 
 
 @dataclass(slots=True)
 class Secret:
+    """Wrap a sensitive value so it is not exposed by normal representations."""
+
     _value: str | None = field(repr=False)
 
     def get(self) -> str | None:
+        """Return the wrapped secret for an authenticated request."""
         return self._value
 
     def __repr__(self) -> str:
+        """Return a redacted representation."""
         return "<SecretValue>"
 
 
@@ -18,6 +24,7 @@ class ConfigurationError(Exception):
 
 
 def _get_env(name: str) -> str | None:
+    """Read a setting from the environment, including Windows user variables."""
     value = os.getenv(name)
     if value:
         return value
@@ -40,6 +47,7 @@ def _get_env(name: str) -> str | None:
 
 @dataclass(slots=True)
 class Config:
+    """Runtime settings for Steam access, scraping, output, and logging."""
     API_KEY: Secret = field(default_factory=lambda: Secret(_get_env("STEAM_API_KEY")))
     STEAM_ID: str | None = field(default_factory=lambda: _get_env("STEAM_ID"))
     STEAM_VANITY: str | None = field(default_factory=lambda: _get_env("STEAM_VANITY"))
@@ -50,6 +58,7 @@ class Config:
     LOGFILE: str = "log.txt"
 
     def validate(self) -> None:
+        """Raise ConfigurationError when a required setting is missing."""
         if not self.API_KEY.get():
             raise ConfigurationError("STEAM_API_KEY is missing!")
         if not self.STEAM_ID:

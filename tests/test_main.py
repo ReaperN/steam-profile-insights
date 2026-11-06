@@ -1,3 +1,5 @@
+"""Integration-style unit tests for the Steam exporter modules."""
+
 import csv
 import json
 from pathlib import Path
@@ -18,11 +20,14 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
 
 def load_fixture(name: str) -> object:
+    """Load a sanitized API fixture from the test fixture directory."""
     with open(FIXTURES_DIR / name, encoding="utf-8") as file:
         return json.load(file)
 
 
 class FakeReviewBlock:
+    """Minimal review block double for the Playwright scraper."""
+
     def __init__(self) -> None:
         self.content = Mock()
         self.content.inner_text.return_value = "A review"
@@ -44,6 +49,8 @@ class FakeReviewBlock:
 
 
 class FakeReviewBlocks:
+    """Collection double implementing the locator methods used by the scraper."""
+
     def __init__(self) -> None:
         self.block = FakeReviewBlock()
 
@@ -56,6 +63,8 @@ class FakeReviewBlocks:
 
 
 class FakeReviewPage:
+    """Page double that validates the scraper's browser interactions."""
+
     def __init__(self) -> None:
         self.blocks = FakeReviewBlocks()
 
@@ -80,6 +89,8 @@ class FakeReviewPage:
 
 
 class FakeReviewContext:
+    """Browser context double that records whether it was closed."""
+
     def __init__(self) -> None:
         self.page = FakeReviewPage()
         self.closed = False
@@ -92,6 +103,8 @@ class FakeReviewContext:
 
 
 class FakeBrowser:
+    """Browser double exposing a fake isolated context."""
+
     def __init__(self) -> None:
         self.context = FakeReviewContext()
         self.closed = False
@@ -104,6 +117,8 @@ class FakeBrowser:
 
 
 class FakePlaywright:
+    """Playwright context-manager double used by scraper tests."""
+
     def __init__(self) -> None:
         self.chromium = Mock()
         self.browser = FakeBrowser()

@@ -1,3 +1,5 @@
+"""Compatibility entry point for running the Steam exporter from the project root."""
+
 import sys
 from pathlib import Path
 
@@ -10,6 +12,7 @@ from bootstrap import bootstrap  # noqa: E402
 
 
 def run() -> None:
+    """Bootstrap the environment and start the application."""
     bootstrap()
     main()
 
