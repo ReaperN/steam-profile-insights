@@ -16,7 +16,7 @@ and game statistics, while review writers can use the review export to
 review, search, and analyze their published reviews.
 
 Example Steam Hunters profile:
-[ReaperN on Steam Hunters](https://steamhunters.com/id/Reaper_N/games)
+[ReaperN on Steam Hunters](https://steamhunters.com/id/Reaper_N/games?sort=completionstate)
 
 The application:
 
