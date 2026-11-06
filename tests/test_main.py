@@ -210,6 +210,17 @@ def test_mask_secrets_redacts_values(monkeypatch: MonkeyPatch) -> None:
     assert "76561198000000000" not in result
 
 
+def test_mask_secrets_does_not_replace_embedded_values(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(main.config, "API_KEY", main.Secret("abc123"))
+    monkeypatch.setattr(main.config, "STEAM_ID", "76561198000000000")
+
+    result = logging_utils.mask_secrets("fooabc123bar 176561198000000000")
+
+    assert result == "fooabc123bar 176561198000000000"
+
+
 def test_calculate_retry_delay_preserves_retry_after(
     monkeypatch: MonkeyPatch,
 ) -> None:
@@ -227,7 +238,7 @@ def test_calculate_retry_delay_preserves_retry_after(
 
 
 def test_non_retryable_achievement_statuses():
-    for status_code in (400, 403):
+    for status_code in (400, 401, 403, 404, 409, 410, 422):
         response = Response()
         response.status_code = status_code
         error = req_exceptions.HTTPError(response=response)
@@ -235,11 +246,11 @@ def test_non_retryable_achievement_statuses():
 
 
 def test_retryable_achievement_status():
-    response = Response()
-    response.status_code = 500
-    error = req_exceptions.HTTPError(response=response)
-
-    assert main.is_retryable_achievement_error(error)
+    for status_code in (429, 500, 502, 503, 599):
+        response = Response()
+        response.status_code = status_code
+        error = req_exceptions.HTTPError(response=response)
+        assert main.is_retryable_achievement_error(error)
 
 
 def test_fetch_games_uses_steam_api_response(monkeypatch: MonkeyPatch) -> None:
@@ -346,6 +357,35 @@ def test_save_outputs_writes_reviews_and_achievements(
     assert achievements[0]["Achievements Total"] == "10"
     assert achievements[0]["Achievements Unlocked"] == "4"
     assert achievements[0]["Completion %"] == "40.0"
+
+
+@pytest.mark.parametrize(
+    "review",
+    ["=HYPERLINK(\"https://example.com\")", "+SUM(1,1)", "-1+1", "@cmd"],
+)
+def test_save_outputs_neutralizes_spreadsheet_formulas(
+    review: str,
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(main.config, "REVIEWS_FILE", str(tmp_path / "reviews.csv"))
+    monkeypatch.setattr(
+        main.config, "ACHIEVEMENTS_FILE", str(tmp_path / "achievements.csv")
+    )
+
+    main.save_outputs(
+        reviews={10: review},
+        games=[{"appid": 10, "name": "=Game", "playtime_forever": 0}],
+        achievements_map={},
+    )
+
+    with open(main.config.REVIEWS_FILE, encoding="utf-8", newline="") as file:
+        exported_review = next(csv.DictReader(file))
+    with open(main.config.ACHIEVEMENTS_FILE, encoding="utf-8", newline="") as file:
+        exported_game = next(csv.DictReader(file))
+
+    assert exported_review["Review"] == "'" + review
+    assert exported_game["Game Title"] == "'=Game"
 
 
 def test_save_outputs_handles_zero_achievements(

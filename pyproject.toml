@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "steam-review-achievement-scraper"
-version = "1.0.3"
+version = "1.0.4"
 description = "Export Steam reviews and achievement progress to CSV files."
 readme = "README.md"
 license = { file = "LICENSE" }

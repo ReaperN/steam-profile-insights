@@ -31,6 +31,7 @@ Playwright review scraping, generated files, and CI workflows.
 | --- | --- |
 | API keys or SteamIDs appear in logs | Centralized masking redacts configured secrets and `key=` query parameters. |
 | Secrets are committed accidentally | Local users are directed to the OS keyring; environment variables remain an alternative for CI and unattended runs. Generated logs, CSV files, and virtual environments are ignored. |
+| Exported text is interpreted as a spreadsheet formula | CSV text beginning with `=`, `+`, `-`, or `@` is prefixed before export. |
 | Unexpected Steam JSON breaks processing | Runtime validators reject malformed response structures and invalid field types. |
 | Transient API failures cause incomplete results | Retry handling covers transient failures, honors `Retry-After`, and uses capped jittered backoff. |
 | Excessive API requests | Achievement requests are limited to games with recorded playtime and use a bounded worker pool. |
@@ -49,6 +50,7 @@ Playwright review scraping, generated files, and CI workflows.
 - The OS keyring protects the API key at rest for local use; the environment
   variable fallback remains exposed to the local process when configured.
 - CSV output is not encrypted and should be protected by the host filesystem.
+- CSV consumers should still treat exported data as untrusted input.
 
 ## Operational Guidance
 

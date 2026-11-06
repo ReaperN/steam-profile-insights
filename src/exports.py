@@ -7,6 +7,13 @@ from logging_utils import log
 from models import AchievementResult, Game
 
 
+def sanitize_csv_text(value: str) -> str:
+    """Prevent spreadsheet formula execution for user-controlled text."""
+    if value.startswith(("=", "+", "-", "@")):
+        return "'" + value
+    return value
+
+
 def save_outputs(
     reviews: dict[int, str],
     games: list[Game],
@@ -39,8 +46,8 @@ def save_outputs(
             reviews_writer.writerow(
                 {
                     "AppID": app_id,
-                    "Game Title": game_names.get(app_id, ""),
-                    "Review": text,
+                    "Game Title": sanitize_csv_text(game_names.get(app_id, "")),
+                    "Review": sanitize_csv_text(text),
                 }
             )
         for game in games:
@@ -57,7 +64,7 @@ def save_outputs(
             achievements_writer.writerow(
                 {
                     "AppID": appid,
-                    "Game Title": game["name"],
+                    "Game Title": sanitize_csv_text(game["name"]),
                     "Playtime (h)": round(game["playtime_forever"] / 60, 2),
                     "Achievements Total": total,
                     "Achievements Unlocked": unlocked,

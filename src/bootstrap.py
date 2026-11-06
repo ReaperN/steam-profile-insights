@@ -10,7 +10,7 @@ PYTHON_BIN = (
     if os.name == "nt"
     else os.path.join(VENV_DIR, "bin", "python")
 )
-REQUIRED_PACKAGES = ["requests", "tenacity", "tqdm", "playwright"]
+REQUIRED_PACKAGES = ["keyring", "requests", "tenacity", "tqdm", "playwright"]
 
 
 def create_venv() -> None:

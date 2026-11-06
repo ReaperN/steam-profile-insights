@@ -29,8 +29,12 @@ def get_session() -> Session:
 def is_retryable_achievement_error(error: BaseException) -> bool:
     """Return whether an achievement request should be retried."""
     if isinstance(error, req_exceptions.HTTPError):
-        status_code = error.response.status_code if error.response is not None else None
-        return status_code not in {400, 403}
+        status_code = (
+            error.response.status_code if error.response is not None else None
+        )
+        return status_code == 429 or (
+            status_code is not None and 500 <= status_code < 600
+        )
     return isinstance(error, (req_exceptions.RequestException, ValueError))
 
 

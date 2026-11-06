@@ -6,6 +6,17 @@ The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.4] - 2026-11-06
+
+### Security
+
+- Neutralized spreadsheet formula injection in CSV text fields.
+- Restricted achievement retries to HTTP 429 and 5xx responses while retaining
+  retries for transport and response-validation failures.
+- Included `keyring` in automatic virtual-environment dependency installation.
+- Avoided replacing API keys and SteamIDs when they occur inside larger
+  alphanumeric strings.
+
 ## [1.0.3] - 2026-11-06
 
 ### Security
