@@ -393,6 +393,11 @@ updates still require review and passing CI before they are merged.
 Security assumptions and residual risks are documented in
 [THREAT_MODEL.md](THREAT_MODEL.md).
 
+For vulnerability reporting, see [SECURITY.md](SECURITY.md). Development
+setup and contribution guidelines are documented in
+[CONTRIBUTING.md](CONTRIBUTING.md). Community expectations are documented in
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+
 ## License
 
 This project is available under the [MIT License](LICENSE).
@@ -417,6 +422,9 @@ This project is available under the [MIT License](LICENSE).
 | `.github/workflows/ci.yml` | Automated quality checks |
 | `.github/workflows/release.yml` | Tag-based GitHub Release workflow |
 | `.github/dependabot.yml` | Automated dependency update proposals |
+| `SECURITY.md` | Security vulnerability reporting policy |
+| `CONTRIBUTING.md` | Development setup and contribution workflow |
+| `CODE_OF_CONDUCT.md` | Community participation standards |
 | `THREAT_MODEL.md` | Assets, trust boundaries, mitigations, and residual risks |
 | `.vscode/settings.json` | Selects the project virtual environment in VS Code |
 
