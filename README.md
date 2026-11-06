@@ -120,7 +120,7 @@ Missing values raise a `ConfigurationError`.
 
 Run the script with Python 3.13:
 
-```powershell
+```text
 python main.py
 ```
 
@@ -133,31 +133,50 @@ keeps the global Python installation free of project dependencies.
 
 Skip automatic bootstrapping when dependencies are already installed:
 
-```powershell
+```text
 python main.py --no-venv
 ```
 
 The same behavior can be selected with:
+
+Windows PowerShell:
 
 ```powershell
 $env:NO_VENV_BOOTSTRAP = "1"
 python main.py
 ```
 
+macOS/Linux:
+
+```bash
+NO_VENV_BOOTSTRAP=1 python main.py
+```
+
 This option assumes that the current Python environment already contains the
 runtime dependencies.
 
-After installing the package into the local project environment, the same
-workflow can also be started with:
+After installing the package into the local project environment, activate the
+environment and start the installed console command.
+
+Windows PowerShell:
 
 ```powershell
 .\venv\Scripts\python.exe -m pip install -e .
-.\venv\Scripts\steam-exporter.exe
+.\venv\Scripts\Activate.ps1
+steam-exporter
+```
+
+macOS/Linux:
+
+```bash
+./venv/bin/python -m pip install -e .
+source ./venv/bin/activate
+steam-exporter
 ```
 
 The console command does not create a virtual environment itself. Using the
-explicit `venv` paths keeps the package, its dependencies, and the generated
-console script out of the global Python installation.
+project `venv` keeps the package, its dependencies, and the generated console
+script out of the global Python installation.
 
 ### Run directly from the project environment
 
@@ -211,20 +230,43 @@ rotating file handler with up to three backup files.
 
 ## Development
 
-Install the project and development tools in the project virtual environment:
+Create or use the project virtual environment and install the development
+tools.
+
+Windows PowerShell:
 
 ```powershell
 .\venv\Scripts\python.exe -m pip install -e ".[dev]"
 ```
 
-Run the local quality checks:
+macOS/Linux:
+
+```bash
+./venv/bin/python -m pip install -e ".[dev]"
+```
+
+After installation, run the same platform-independent quality checks:
+
+Windows PowerShell:
 
 ```powershell
-.\venv\Scripts\ruff.exe format --check main.py src tests
-.\venv\Scripts\ruff.exe check main.py src tests
-.\venv\Scripts\pyright.exe
-.\venv\Scripts\python.exe -m compileall -q main.py src tests
-.\venv\Scripts\python.exe -m pytest
+.\venv\Scripts\Activate.ps1
+```
+
+macOS/Linux:
+
+```bash
+source ./venv/bin/activate
+```
+
+Then run:
+
+```text
+python -m ruff format --check main.py src tests
+python -m ruff check main.py src tests
+python -m pyright
+python -m compileall -q main.py src tests
+python -m pytest
 ```
 
 The test suite does not access Steam or require a browser. It includes:
@@ -253,7 +295,7 @@ requests it runs on Python 3.13 and performs:
 Releases are created from reviewed version tags matching `v*.*.*`, for
 example:
 
-```powershell
+```text
 git tag -a v1.0.0 -m "Release v1.0.0"
 git push origin v1.0.0
 ```
