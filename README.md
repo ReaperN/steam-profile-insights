@@ -1,5 +1,7 @@
 # Steam Review & Achievement Scraper
 
+[![CI](https://github.com/ReaperN/steam-profile-insights/actions/workflows/ci.yml/badge.svg)](https://github.com/ReaperN/steam-profile-insights/actions/workflows/ci.yml)
+
 A standalone Python utility that exports Steam reviews and achievement
 progress to CSV files.
 
@@ -291,6 +293,8 @@ requests it runs on Python 3.13 and performs:
 4. pytest
 
 ## Releases and Dependency Updates
+
+See [CHANGELOG.md](CHANGELOG.md) for the project history.
 
 Releases are created from reviewed version tags matching `v*.*.*`, for
 example:
