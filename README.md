@@ -180,6 +180,37 @@ The console command does not create a virtual environment itself. Using the
 project `venv` keeps the package, its dependencies, and the generated console
 script out of the global Python installation.
 
+### Install the release wheel
+
+Download the wheel from the
+[latest GitHub Release](https://github.com/ReaperN/steam-profile-insights/releases)
+and install it into a virtual environment:
+
+Windows PowerShell:
+
+```powershell
+py -3.13 -m venv venv
+.\venv\Scripts\Activate.ps1
+python -m pip install .\steam_review_achievement_scraper-1.0.0-py3-none-any.whl
+python -m playwright install chromium
+steam-exporter
+```
+
+macOS/Linux:
+
+```bash
+python3.13 -m venv venv
+source ./venv/bin/activate
+python -m pip install ./steam_review_achievement_scraper-1.0.0-py3-none-any.whl
+python -m playwright install chromium
+steam-exporter
+```
+
+The wheel installation installs the Python dependencies. Playwright Chromium
+is installed separately because it is a browser runtime rather than a Python
+package. Configure the required environment variables before starting the
+application.
+
 ### Run directly from the project environment
 
 Windows:
