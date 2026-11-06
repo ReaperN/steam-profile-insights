@@ -4,13 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "steam-review-achievement-scraper"
-version = "1.0.2"
+version = "1.0.3"
 description = "Export Steam reviews and achievement progress to CSV files."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.13"
 dependencies = [
     "playwright",
+    "keyring",
     "requests",
     "tenacity",
     "tqdm",
@@ -50,5 +51,7 @@ select = ["E", "F", "I"]
 [tool.pyright]
 include = ["main.py", "src", "tests"]
 extraPaths = ["src"]
+stubPath = "typings"
 typeCheckingMode = "strict"
 pythonVersion = "3.13"
+reportMissingModuleSource = "none"

@@ -1,5 +1,6 @@
 """Application orchestration and the public compatibility facade."""
 
+import argparse
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -14,7 +15,13 @@ from api import (
     parse_achievements_response,
     parse_games_response,
 )
-from config import Config, ConfigurationError, Secret, config
+from config import (
+    Config,
+    ConfigurationError,
+    Secret,
+    config,
+    configure_api_key,
+)
 from exports import save_outputs
 from logging_utils import log
 from models import AchievementResult, Game
@@ -27,6 +34,7 @@ __all__ = [
     "Secret",
     "calculate_retry_delay",
     "config",
+    "configure_api_key",
     "extract_reviews_playwright",
     "fetch_achievements",
     "fetch_games",
@@ -82,8 +90,18 @@ def fetch_all_achievements(
     return results
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     """Run scraping, API loading, and CSV export from configuration."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--configure-api-key",
+        action="store_true",
+        help="store the Steam API key in the operating-system keyring and exit",
+    )
+    args = parser.parse_args(argv)
+    if args.configure_api_key:
+        configure_api_key()
+        return
     try:
         config.validate()
         open(config.LOGFILE, "w").close()

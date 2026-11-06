@@ -13,6 +13,7 @@ from requests import exceptions as req_exceptions
 
 import api
 import app as main
+import config as config_module
 import logging_utils
 import reviews as reviews_module
 
@@ -140,6 +141,61 @@ def test_config_validation_reports_missing_values():
 
     with pytest.raises(main.ConfigurationError, match="STEAM_API_KEY"):
         config.validate()
+
+
+def test_api_key_prefers_keyring(monkeypatch: MonkeyPatch) -> None:
+    def get_password(service: str, username: str) -> str:
+        return "keyring-secret"
+
+    monkeypatch.setattr(
+        config_module.keyring,
+        "get_password",
+        get_password,
+    )
+    monkeypatch.setenv("STEAM_API_KEY", "environment-secret")
+
+    assert config_module.get_api_key() == "keyring-secret"
+
+
+def test_api_key_falls_back_to_environment(monkeypatch: MonkeyPatch) -> None:
+    def get_password(service: str, username: str) -> None:
+        return None
+
+    monkeypatch.setattr(
+        config_module.keyring,
+        "get_password",
+        get_password,
+    )
+    monkeypatch.setenv("STEAM_API_KEY", "environment-secret")
+
+    assert config_module.get_api_key() == "environment-secret"
+
+
+def test_configure_api_key_stores_in_keyring(monkeypatch: MonkeyPatch) -> None:
+    stored: dict[str, str] = {}
+
+    def getpass(prompt: str) -> str:
+        return "new-secret"
+
+    def set_password(service: str, username: str, password: str) -> None:
+        stored.update(
+            {"service": service, "username": username, "password": password}
+        )
+
+    monkeypatch.setattr(config_module.getpass, "getpass", getpass)
+    monkeypatch.setattr(
+        config_module.keyring,
+        "set_password",
+        set_password,
+    )
+
+    config_module.configure_api_key()
+
+    assert stored == {
+        "service": config_module.KEYRING_SERVICE,
+        "username": config_module.KEYRING_USERNAME,
+        "password": "new-secret",
+    }
 
 
 def test_mask_secrets_redacts_values(monkeypatch: MonkeyPatch) -> None:

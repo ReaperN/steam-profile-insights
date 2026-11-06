@@ -1,7 +1,14 @@
 """Configuration values, environment lookup, and secret handling."""
 
+import getpass
 import os
 from dataclasses import dataclass, field
+
+import keyring
+from keyring.errors import KeyringError
+
+KEYRING_SERVICE = "steam-profile-insights"
+KEYRING_USERNAME = "steam-api-key"
 
 
 @dataclass(slots=True)
@@ -45,10 +52,33 @@ def _get_env(name: str) -> str | None:
         return None
 
 
+def get_api_key() -> str | None:
+    """Read the API key from the OS keyring, then the environment."""
+    try:
+        value = keyring.get_password(KEYRING_SERVICE, KEYRING_USERNAME)
+    except KeyringError:
+        value = None
+    return value or _get_env("STEAM_API_KEY")
+
+
+def configure_api_key() -> None:
+    """Prompt for and store the Steam API key in the OS keyring."""
+    api_key = getpass.getpass("Steam Web API key: ").strip()
+    if not api_key:
+        raise ConfigurationError("The Steam API key cannot be empty.")
+    try:
+        keyring.set_password(KEYRING_SERVICE, KEYRING_USERNAME, api_key)
+    except KeyringError as error:
+        raise ConfigurationError(
+            "The operating-system keyring could not store the API key."
+        ) from error
+    print("Steam API key stored in the operating-system keyring.")
+
+
 @dataclass(slots=True)
 class Config:
     """Runtime settings for Steam access, scraping, output, and logging."""
-    API_KEY: Secret = field(default_factory=lambda: Secret(_get_env("STEAM_API_KEY")))
+    API_KEY: Secret = field(default_factory=lambda: Secret(get_api_key()))
     STEAM_ID: str | None = field(default_factory=lambda: _get_env("STEAM_ID"))
     STEAM_VANITY: str | None = field(default_factory=lambda: _get_env("STEAM_VANITY"))
     MAX_PAGES: int = 20

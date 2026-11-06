@@ -17,8 +17,8 @@ Playwright review scraping, generated files, and CI workflows.
 
 ## Trust Boundaries
 
-1. **Local environment:** environment variables, source code, virtual
-   environment, generated files, and the user account.
+1. **Local environment:** the operating-system keyring, environment variables,
+   source code, virtual environment, generated files, and the user account.
 2. **Steam services:** Steam Web API responses and Steam Community web pages
    are external inputs and are not trusted blindly.
 3. **CI environment:** GitHub Actions executes repository code and handles
@@ -30,7 +30,7 @@ Playwright review scraping, generated files, and CI workflows.
 | Threat | Mitigation |
 | --- | --- |
 | API keys or SteamIDs appear in logs | Centralized masking redacts configured secrets and `key=` query parameters. |
-| Secrets are committed accidentally | Secrets are supplied through environment variables; generated logs, CSV files, and virtual environments are ignored. |
+| Secrets are committed accidentally | Local users are directed to the OS keyring; environment variables remain an alternative for CI and unattended runs. Generated logs, CSV files, and virtual environments are ignored. |
 | Unexpected Steam JSON breaks processing | Runtime validators reject malformed response structures and invalid field types. |
 | Transient API failures cause incomplete results | Retry handling covers transient failures, honors `Retry-After`, and uses capped jittered backoff. |
 | Excessive API requests | Achievement requests are limited to games with recorded playtime and use a bounded worker pool. |
@@ -46,11 +46,17 @@ Playwright review scraping, generated files, and CI workflows.
   Chromium should be kept current.
 - Runtime validation checks the response contract used by this application but
   does not prove that all Steam fields are semantically correct.
-- This project does not provide a persistent secret store or encrypted output.
+- The OS keyring protects the API key at rest for local use; the environment
+  variable fallback remains exposed to the local process when configured.
+- CSV output is not encrypted and should be protected by the host filesystem.
 
 ## Operational Guidance
 
 - Never place secrets in source code, fixtures, issue reports, or pull requests.
+- Prefer `python main.py --configure-api-key` for local use instead of storing
+  the API key in an environment variable.
+- Use `STEAM_API_KEY` only when keyring access is unavailable or the application
+  runs unattended, such as in CI or on a server.
 - Use a dedicated Steam API key with the minimum practical exposure.
 - Review Dependabot pull requests and run the complete CI workflow before
   merging.

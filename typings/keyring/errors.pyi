@@ -1,0 +1,3 @@
+"""Type definitions for keyring exceptions."""
+
+class KeyringError(Exception): ...
