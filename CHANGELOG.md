@@ -8,7 +8,7 @@ uses [Semantic Versioning](https://semver.org/).
 
 ## [1.0.2] - 2026-11-06
 
-### Added
+### Added in 1.0.2
 
 - Added module, class, and function docstrings across the Python source and
   test modules.
@@ -23,7 +23,7 @@ uses [Semantic Versioning](https://semver.org/).
 
 ## [1.0.0] - 2026-11-06
 
-### Added
+### Added in 1.0.0
 
 - Steam review scraping with Playwright.
 - Steam Web API integration for owned games and achievements.
