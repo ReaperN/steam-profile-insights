@@ -372,6 +372,23 @@ requests it runs on Python 3.13 and performs:
 3. strict Pyright type checking
 4. pytest
 
+## Security-minded Engineering
+
+Security is treated as an engineering concern throughout the project:
+
+- threat modeling documents assets, trust boundaries, mitigations, and
+  residual risks
+- API keys are redacted from logs and can be stored in the operating-system
+  keyring for local use
+- external Steam responses are validated before processing
+- user-controlled CSV text is sanitized against spreadsheet formula injection
+- retry behavior distinguishes transient failures from permanent HTTP errors
+- CI and release publishing use separate workflows with least-privilege
+  permissions
+- release assets include SHA-256 checksums for integrity verification
+- Dependabot, `SECURITY.md`, and the documented reporting process support
+  ongoing maintenance and responsible disclosure
+
 ## Releases and Dependency Updates
 
 See [CHANGELOG.md](CHANGELOG.md) for the project history.
