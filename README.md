@@ -1,6 +1,9 @@
 # Steam Profile Insights
 
 [![CI](https://github.com/ReaperN/steam-profile-insights/actions/workflows/ci.yml/badge.svg)](https://github.com/ReaperN/steam-profile-insights/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.13%2B-blue.svg)](https://www.python.org/)
+[![Latest Release](https://img.shields.io/github/v/release/ReaperN/steam-profile-insights)](https://github.com/ReaperN/steam-profile-insights/releases/latest)
+[![License](https://img.shields.io/github/license/ReaperN/steam-profile-insights)](LICENSE)
 
 A standalone Python utility that exports Steam reviews and achievement
 progress to CSV files.
