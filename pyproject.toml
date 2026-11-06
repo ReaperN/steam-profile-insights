@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "steam-review-achievement-scraper"
+version = "1.0.0"
+description = "Export Steam reviews and achievement progress to CSV files."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.13"
+dependencies = [
+    "playwright",
+    "requests",
+    "tenacity",
+    "tqdm",
+]
+
+[project.scripts]
+steam-exporter = "steam_exporter.app:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pyright>=1.1.390", "ruff>=0.9"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["src"]
+
+[tool.setuptools]
+py-modules = ["main"]
+package-dir = {"" = "src"}
+packages = ["steam_exporter"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.pyright]
+include = ["main.py", "src", "tests"]
+extraPaths = ["src"]
+typeCheckingMode = "strict"
+pythonVersion = "3.13"

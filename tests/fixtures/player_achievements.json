@@ -1,0 +1,16 @@
+{
+  "playerstats": {
+    "steamID": "REDACTED",
+    "gameName": "Example Game",
+    "achievements": [
+      {
+        "apiname": "EXAMPLE_ONE",
+        "achieved": 1
+      },
+      {
+        "apiname": "EXAMPLE_TWO",
+        "achieved": 0
+      }
+    ]
+  }
+}
