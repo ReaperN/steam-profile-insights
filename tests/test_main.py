@@ -9,10 +9,10 @@ from _pytest.monkeypatch import MonkeyPatch
 from requests import Response
 from requests import exceptions as req_exceptions
 
-import steam_exporter as main
-import steam_exporter.api as api
-import steam_exporter.logging_utils as logging_utils
-import steam_exporter.reviews as reviews_module
+import api
+import app as main
+import logging_utils
+import reviews as reviews_module
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 

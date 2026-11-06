@@ -1,8 +1,8 @@
 import csv
 
-from .config import config
-from .logging_utils import log
-from .models import AchievementResult, Game
+from config import config
+from logging_utils import log
+from models import AchievementResult, Game
 
 
 def save_outputs(

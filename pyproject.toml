@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
-steam-exporter = "steam_exporter.app:main"
+steam-exporter = "app:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "pyright>=1.1.390", "ruff>=0.9"]
@@ -28,9 +28,17 @@ addopts = "-q"
 pythonpath = ["src"]
 
 [tool.setuptools]
-py-modules = ["main"]
+py-modules = [
+    "api",
+    "app",
+    "bootstrap",
+    "config",
+    "exports",
+    "logging_utils",
+    "models",
+    "reviews",
+]
 package-dir = {"" = "src"}
-packages = ["steam_exporter"]
 
 [tool.ruff]
 line-length = 88
