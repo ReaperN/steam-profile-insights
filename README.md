@@ -210,7 +210,7 @@ Windows PowerShell:
 ```powershell
 .\venv\Scripts\python.exe -m pip install -e .
 .\venv\Scripts\Activate.ps1
-steam-exporter
+python -m app
 ```
 
 macOS/Linux:
@@ -218,12 +218,12 @@ macOS/Linux:
 ```bash
 ./venv/bin/python -m pip install -e .
 source ./venv/bin/activate
-steam-exporter
+python -m app
 ```
 
-The console command does not create a virtual environment itself. Using the
-project `venv` keeps the package, its dependencies, and the generated console
-script out of the global Python installation.
+The module command does not create a virtual environment itself. Using the
+project `venv` keeps the package and its dependencies out of the global Python
+installation.
 
 ### Install the release wheel
 
@@ -236,9 +236,9 @@ Windows PowerShell:
 ```powershell
 py -3.13 -m venv venv
 .\venv\Scripts\Activate.ps1
-python -m pip install .\steam_review_achievement_scraper-1.0.0-py3-none-any.whl
+python -m pip install .\steam_review_achievement_scraper-1.0.4-py3-none-any.whl
 python -m playwright install chromium
-steam-exporter
+python -m app
 ```
 
 macOS/Linux:
@@ -246,9 +246,9 @@ macOS/Linux:
 ```bash
 python3.13 -m venv venv
 source ./venv/bin/activate
-python -m pip install ./steam_review_achievement_scraper-1.0.0-py3-none-any.whl
+python -m pip install ./steam_review_achievement_scraper-1.0.4-py3-none-any.whl
 python -m playwright install chromium
-steam-exporter
+python -m app
 ```
 
 The wheel installation installs the Python dependencies. Playwright Chromium
