@@ -1,4 +1,4 @@
-# Steam Review & Achievement Scraper
+# Steam Profile Insights
 
 [![CI](https://github.com/ReaperN/steam-profile-insights/actions/workflows/ci.yml/badge.svg)](https://github.com/ReaperN/steam-profile-insights/actions/workflows/ci.yml)
 
