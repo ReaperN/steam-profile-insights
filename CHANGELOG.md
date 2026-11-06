@@ -6,12 +6,12 @@ The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 uses [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.0.1] - 2026-11-06
 
 ### Changed
 
 - Flattened the source layout so application modules are located directly
-  under `src/`.
+  under `src`.
 
 ## [1.0.0] - 2026-11-06
 
