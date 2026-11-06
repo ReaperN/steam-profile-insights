@@ -15,9 +15,17 @@ def mask_secrets(text: object) -> str | None:
     value = str(text)
     api = config.API_KEY.get()
     if api:
-        value = value.replace(api, "<REDACTED_API_KEY>")
+        value = re.sub(
+            rf"(?<![A-Za-z0-9]){re.escape(api)}(?![A-Za-z0-9])",
+            "<REDACTED_API_KEY>",
+            value,
+        )
     if config.STEAM_ID:
-        value = value.replace(config.STEAM_ID, "<REDACTED_STEAMID>")
+        value = re.sub(
+            rf"(?<![A-Za-z0-9]){re.escape(config.STEAM_ID)}(?![A-Za-z0-9])",
+            "<REDACTED_STEAMID>",
+            value,
+        )
     return re.sub(
         r"([?&]key=)[^&\s]+",
         r"\1<REDACTED>",

@@ -281,11 +281,11 @@ The main workflow is:
 
 Achievement requests allow up to three retries after the initial request.
 
-- HTTP 400 and 403 are not retried because they indicate invalid or
-  unauthorized requests.
+- HTTP 401, 400, 403, 404, 409, 410, and 422 are not retried because they
+  indicate invalid, unauthorized, or otherwise non-transient requests.
 - HTTP 429 honors the `Retry-After` header when available.
-- Timeouts, HTTP 5xx responses, and other transient failures use exponential
-  backoff with full jitter.
+- HTTP 5xx responses, timeouts, and other transient transport or validation
+  failures use exponential backoff with full jitter.
 - Backoff delays are capped to prevent a single request from blocking
   indefinitely.
 
@@ -305,6 +305,10 @@ The script writes these files in the project directory:
 
 Existing CSV files are overwritten on each successful run. The log uses a
 rotating file handler with up to three backup files.
+
+Review text and game names are untrusted input. Values beginning with `=`, `+`,
+`-`, or `@` are prefixed before export to prevent spreadsheet formula
+execution. Treat the CSV files as data rather than executable content.
 
 ## Development
 
