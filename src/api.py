@@ -1,3 +1,5 @@
+"""Steam Web API access, response validation, and retry handling."""
+
 import datetime
 import email.utils
 import random
@@ -18,12 +20,14 @@ thread_local = threading.local()
 
 
 def get_session() -> Session:
+    """Return the HTTP session local to the current worker thread."""
     if not hasattr(thread_local, "session"):
         thread_local.session = Session()
     return thread_local.session
 
 
 def is_retryable_achievement_error(error: BaseException) -> bool:
+    """Return whether an achievement request should be retried."""
     if isinstance(error, req_exceptions.HTTPError):
         status_code = error.response.status_code if error.response is not None else None
         return status_code not in {400, 403}
@@ -33,6 +37,7 @@ def is_retryable_achievement_error(error: BaseException) -> bool:
 def calculate_retry_delay(
     delay: float, maximum: float, preserve_delay: bool = False
 ) -> float:
+    """Calculate a bounded retry delay with random jitter."""
     delay = max(delay, 0)
     if preserve_delay:
         base_delay = min(delay, maximum)
@@ -42,6 +47,7 @@ def calculate_retry_delay(
 
 
 def wait_for_achievement_retry(retry_state: Any) -> float:
+    """Calculate retry timing from the exception stored in a Tenacity state."""
     error = retry_state.outcome.exception()
     if isinstance(error, req_exceptions.HTTPError):
         response = error.response
@@ -67,6 +73,7 @@ def wait_for_achievement_retry(retry_state: Any) -> float:
 
 
 def parse_games_response(data: object) -> list[Game]:
+    """Validate and normalize the owned-games response from Steam."""
     if not isinstance(data, Mapping):
         raise ValueError("Steam game response must be a JSON object")
     data = cast(Mapping[str, Any], data)
@@ -101,6 +108,7 @@ def parse_games_response(data: object) -> list[Game]:
 
 
 def parse_achievements_response(data: object) -> list[Mapping[str, Any]]:
+    """Validate and return achievement records from a Steam response."""
     if not isinstance(data, Mapping):
         raise ValueError("Steam achievement response must be a JSON object")
     data = cast(Mapping[str, Any], data)
@@ -139,6 +147,7 @@ def parse_achievements_response(data: object) -> list[Mapping[str, Any]]:
     reraise=True,
 )
 def _fetch_achievements_with_retry(appid: int) -> tuple[int, int, int]:
+    """Fetch and summarize one game's achievements with retry handling."""
     params = {"key": config.API_KEY.get(), "steamid": config.STEAM_ID, "appid": appid}
     response = get_session().get(
         "https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/",
@@ -155,6 +164,7 @@ def _fetch_achievements_with_retry(appid: int) -> tuple[int, int, int]:
 
 
 def fetch_achievements(appid: int) -> tuple[int, int | None, int | None]:
+    """Fetch one game's achievement totals, logging recoverable failures."""
     try:
         return _fetch_achievements_with_retry(appid)
     except (req_exceptions.RequestException, ValueError) as error:
@@ -166,6 +176,7 @@ def fetch_achievements(appid: int) -> tuple[int, int | None, int | None]:
 
 
 def fetch_games() -> list[Game]:
+    """Fetch the games owned by the configured Steam user."""
     params = {
         "key": config.API_KEY.get(),
         "steamid": config.STEAM_ID,

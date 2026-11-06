@@ -1,3 +1,5 @@
+"""Logging setup with redaction of Steam credentials and user identifiers."""
+
 import logging
 import logging.handlers
 import re
@@ -7,6 +9,7 @@ from config import config
 
 
 def mask_secrets(text: object) -> str | None:
+    """Replace configured secrets and URL keys with safe placeholders."""
     if text is None:
         return text
     value = str(text)
@@ -43,6 +46,7 @@ LogLevel = Literal["debug", "info", "warning", "error", "critical", "exception"]
 
 
 def log(msg: object, source: str | None = None, level: LogLevel = "info") -> None:
+    """Write a masked message at the requested log level."""
     masked_msg = mask_secrets(msg)
     final = f"SOURCE: {mask_secrets(source)} {masked_msg}" if source else masked_msg
     if level == "exception":

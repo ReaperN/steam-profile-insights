@@ -1,3 +1,5 @@
+"""Playwright-based Steam community review extraction."""
+
 import re
 
 from playwright.sync_api import sync_playwright
@@ -7,6 +9,7 @@ from logging_utils import log
 
 
 def extract_reviews_playwright() -> dict[int, str]:
+    """Scrape review text keyed by Steam AppID from the configured profile."""
     reviews: dict[int, str] = {}
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)

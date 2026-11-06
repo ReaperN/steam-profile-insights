@@ -1,3 +1,5 @@
+"""Application orchestration and the public compatibility facade."""
+
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -38,6 +40,7 @@ __all__ = [
 def fetch_all_achievements(
     games: list[Game],
 ) -> dict[int, AchievementResult]:
+    """Load achievements concurrently for games with recorded playtime."""
     results: dict[int, AchievementResult] = {}
     games_with_playtime = [game for game in games if game["playtime_forever"] > 0]
     log("Starting parallel achievement loading...", source="fetch_all_achievements")
@@ -80,6 +83,7 @@ def fetch_all_achievements(
 
 
 def main() -> None:
+    """Run scraping, API loading, and CSV export from configuration."""
     try:
         config.validate()
         open(config.LOGFILE, "w").close()
