@@ -54,6 +54,7 @@ automatically when run outside one.
 The required runtime packages are:
 
 - `playwright`
+- `keyring`
 - `requests`
 - `tenacity`
 - `tqdm`
@@ -73,11 +74,48 @@ The application reads these environment variables:
 
 | Variable | Description |
 | --- | --- |
-| `STEAM_API_KEY` | Steam Web API key |
+| `STEAM_API_KEY` | Steam Web API key fallback for CI and unattended runs |
 | `STEAM_ID` | Steam64 ID of the account |
 | `STEAM_VANITY` | Steam vanity name used for review URLs |
 
-### Windows PowerShell
+### Preferred: operating-system keyring
+
+For local use, the recommended method is to store the Steam API key in the
+operating-system keyring. This avoids keeping the key in shell profiles or
+persistent environment variables.
+
+From the project directory, run:
+
+```powershell
+python main.py --configure-api-key
+```
+
+The command prompts for the key without displaying it and stores it in the
+native secure storage:
+
+- Windows: Credential Manager
+- macOS: Keychain
+- Linux: the configured Secret Service or KWallet backend
+
+The application checks the keyring first on every run. After configuring the
+key, set only the non-secret profile values and start the application:
+
+```powershell
+setx STEAM_ID "7656119XXXXXXXXXX"
+setx STEAM_VANITY "YourVanityName"
+python main.py
+```
+
+Open a new terminal after using `setx`. If the keyring is unavailable, the
+application falls back to `STEAM_API_KEY`; this fallback is intended for CI,
+servers, and other unattended environments.
+
+### Alternative: environment variables
+
+Use environment variables when the application runs in CI, on a server, or
+in another unattended environment.
+
+#### Windows PowerShell
 
 ```powershell
 setx STEAM_API_KEY "YOUR_API_KEY_HERE"
@@ -98,7 +136,7 @@ if ($env:STEAM_VANITY) { "STEAM_VANITY is set" }
 The application validates all three values before starting the workflow.
 Missing values raise a `ConfigurationError`.
 
-### macOS/Linux
+#### macOS/Linux
 
 Set the environment variables in the current shell:
 

@@ -6,6 +6,13 @@ The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] - 2026-11-06
+
+### Security
+
+- Added optional operating-system keyring storage for the Steam API key.
+- Kept `STEAM_API_KEY` as a fallback for CI and unattended environments.
+
 ## [1.0.2] - 2026-11-06
 
 ### Added in 1.0.2
