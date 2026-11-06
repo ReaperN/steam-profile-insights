@@ -8,7 +8,7 @@ uses [Semantic Versioning](https://semver.org/).
 
 ## [1.0.4] - 2026-11-06
 
-### Security
+### Security in 1.0.4
 
 - Neutralized spreadsheet formula injection in CSV text fields.
 - Restricted achievement retries to HTTP 429 and 5xx responses while retaining
@@ -19,7 +19,7 @@ uses [Semantic Versioning](https://semver.org/).
 
 ## [1.0.3] - 2026-11-06
 
-### Security
+### Security in 1.0.3
 
 - Added optional operating-system keyring storage for the Steam API key.
 - Kept `STEAM_API_KEY` as a fallback for CI and unattended environments.
@@ -59,3 +59,4 @@ uses [Semantic Versioning](https://semver.org/).
 [1.0.1]: https://github.com/ReaperN/steam-profile-insights/releases/tag/v1.0.1
 [1.0.2]: https://github.com/ReaperN/steam-profile-insights/releases/tag/v1.0.2
 [1.0.3]: https://github.com/ReaperN/steam-profile-insights/releases/tag/v1.0.3
+[1.0.4]: https://github.com/ReaperN/steam-profile-insights/releases/tag/v1.0.4
