@@ -3,7 +3,7 @@ import logging.handlers
 import re
 from typing import Literal
 
-from .config import config
+from config import config
 
 
 def mask_secrets(text: object) -> str | None:

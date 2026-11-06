@@ -9,9 +9,9 @@ from requests import Session
 from requests import exceptions as req_exceptions
 from tenacity import retry, retry_if_exception, stop_after_attempt
 
-from .config import config
-from .logging_utils import log
-from .models import Game
+from config import config
+from logging_utils import log
+from models import Game
 
 MAX_RETRY_ATTEMPTS = 3
 thread_local = threading.local()

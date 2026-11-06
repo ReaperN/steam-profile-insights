@@ -2,8 +2,8 @@ import re
 
 from playwright.sync_api import sync_playwright
 
-from .config import config
-from .logging_utils import log
+from config import config
+from logging_utils import log
 
 
 def extract_reviews_playwright() -> dict[int, str]:

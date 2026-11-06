@@ -353,13 +353,15 @@ This project is available under the [MIT License](LICENSE).
 | Path | Purpose |
 | --- | --- |
 | `main.py` | Backward-compatible executable entry point |
-| `src/steam_exporter/` | Application package split into focused modules |
-| `src/steam_exporter/config.py` | Configuration and secret wrapper |
-| `src/steam_exporter/models.py` | Typed game and achievement models |
-| `src/steam_exporter/api.py` | Steam API clients, retries, and response validation |
-| `src/steam_exporter/reviews.py` | Playwright review scraper |
-| `src/steam_exporter/exports.py` | CSV output handling |
-| `src/steam_exporter/app.py` | Workflow orchestration |
+| `src/` | Application modules in the source layout |
+| `src/config.py` | Configuration and secret wrapper |
+| `src/models.py` | Typed game and achievement models |
+| `src/api.py` | Steam API clients, retries, and response validation |
+| `src/reviews.py` | Playwright review scraper |
+| `src/exports.py` | CSV output handling |
+| `src/app.py` | Workflow orchestration |
+| `src/bootstrap.py` | Local virtual-environment bootstrap |
+| `src/logging_utils.py` | Logging and secret masking |
 | `tests/test_main.py` | Unit and isolated integration-style tests |
 | `tests/fixtures/` | Sanitized Steam API response fixtures |
 | `pyproject.toml` | Packaging, dependencies, pytest, Ruff, and Pyright configuration |
