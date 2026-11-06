@@ -81,9 +81,34 @@ Restart VS Code or open a new terminal after using `setx`.
 To verify the variables in a new PowerShell session:
 
 ```powershell
-echo $env:STEAM_API_KEY
-echo $env:STEAM_ID
-echo $env:STEAM_VANITY
+if ($env:STEAM_API_KEY) { "STEAM_API_KEY is set" }
+if ($env:STEAM_ID) { "STEAM_ID is set" }
+if ($env:STEAM_VANITY) { "STEAM_VANITY is set" }
+```
+
+The application validates all three values before starting the workflow.
+Missing values raise a `ConfigurationError`.
+
+### macOS/Linux
+
+Set the environment variables in the current shell:
+
+```bash
+export STEAM_API_KEY="YOUR_API_KEY_HERE"
+export STEAM_ID="7656119XXXXXXXXXX"
+export STEAM_VANITY="YourVanityName"
+```
+
+To keep them available in future shell sessions, add the exports to your
+shell profile, such as `~/.bashrc` or `~/.zshrc`. Do not commit that file or
+share its contents because it contains your API key.
+
+Verify the variables with:
+
+```bash
+test -n "$STEAM_API_KEY" && echo "STEAM_API_KEY is set"
+test -n "$STEAM_ID" && echo "STEAM_ID is set"
+test -n "$STEAM_VANITY" && echo "STEAM_VANITY is set"
 ```
 
 The application validates all three values before starting the workflow.
