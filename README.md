@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/ReaperN/steam-profile-insights/actions/workflows/ci.yml/badge.svg)](https://github.com/ReaperN/steam-profile-insights/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/python-3.13%2B-blue.svg)](https://www.python.org/)
+[![Pyright](https://img.shields.io/badge/type%20checking-Pyright%20strict-4B32C3.svg)](https://microsoft.github.io/pyright/)
 [![Latest Release](https://img.shields.io/github/v/release/ReaperN/steam-profile-insights)](https://github.com/ReaperN/steam-profile-insights/releases/latest)
 [![License](https://img.shields.io/github/license/ReaperN/steam-profile-insights)](LICENSE)
 
